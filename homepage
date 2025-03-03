@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekmenu & Boodschappenlijst</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #ffeb99;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #ff6600;
+        }
+        input, button {
+            margin: 5px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .chipsinator-button {
+            background-color: #ff0000;
+            font-weight: bold;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 16px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td, th {
+            border: 1px solid #ff6600;
+            padding: 10px;
+            background: #ffe0b3;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #ffe0b3;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Weekmenu</h2>
+        <input type="text" id="gerecht" placeholder="Voer een gerecht in">
+        <button onclick="voegGerechtToe()">Toevoegen</button>
+        <table>
+            <tr>
+                <th>Dag</th>
+                <th>Gerecht</th>
+            </tr>
+            <tbody id="weekmenu">
+                <tr><td>Maandag</td><td id="dag1"></td></tr>
+                <tr><td>Dinsdag</td><td id="dag2"></td></tr>
+                <tr><td>Woensdag</td><td id="dag3"></td></tr>
+                <tr><td>Donderdag</td><td id="dag4"></td></tr>
+                <tr><td>Vrijdag</td><td id="dag5"></td></tr>
+                <tr><td>Zaterdag</td><td id="dag6"></td></tr>
+                <tr><td>Zondag</td><td id="dag7"></td></tr>
+            </tbody>
+        </table>
+        <button onclick="wisWeekmenu()">Wis Weekmenu</button>
+        
+        <h2>Boodschappenlijst</h2>
+        <input type="text" id="boodschap" placeholder="Voer een item in" onkeypress="handleKeyPress(event, 'boodschap')">
+        <button onclick="voegBoodschapToe()">Toevoegen</button>
+        <button class="chipsinator-button" onclick="chipsinator()">Chipsinator</button>
+        <ul id="boodschappenlijst"></ul>
+        <button onclick="wisBoodschappenlijst()">Wis Boodschappenlijst</button>
+    </div>
+
+    <script>
+        const chipssoorten = [
+            "Lay's Naturel", "Lay's Paprika", "Doritos Nacho Cheese", "Cheetos Nibb-it", "Bugles", "Pringles Original", "Pringles Sour Cream & Onion", "Hamka's", "Bolognese Chips", "Croky Paprika", "Croky Naturel"
+        ];
+
+        let dagIndex = 1;
+        function voegGerechtToe() {
+            if (dagIndex <= 7) {
+                let input = document.getElementById("gerecht");
+                let dagCel = document.getElementById("dag" + dagIndex);
+                if (input.value.trim() !== "") {
+                    dagCel.textContent = input.value;
+                    input.value = "";
+                    dagIndex++;
+                }
+            }
+        }
+
+        function voegBoodschapToe() {
+            let input = document.getElementById("boodschap");
+            let lijst = document.getElementById("boodschappenlijst");
+            if (input.value.trim() !== "") {
+                let item = document.createElement("li");
+                item.textContent = input.value;
+                lijst.appendChild(item);
+                input.value = "";
+            }
+        }
+
+        function wisWeekmenu() {
+            for (let i = 1; i <= 7; i++) {
+                document.getElementById("dag" + i).textContent = "";
+            }
+            dagIndex = 1;
+        }
+
+        function wisBoodschappenlijst() {
+            document.getElementById("boodschappenlijst").innerHTML = "";
+        }
+
+        function handleKeyPress(event, inputId) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                if (inputId === "boodschap") {
+                    voegBoodschapToe();
+                }
+            }
+        }
+
+        function chipsinator() {
+            let randomChips = chipssoorten[Math.floor(Math.random() * chipssoorten.length)];
+            let lijst = document.getElementById("boodschappenlijst");
+            let item = document.createElement("li");
+            item.textContent = randomChips;
+            lijst.appendChild(item);
+        }
+    </script>
+</body>
+</html>
